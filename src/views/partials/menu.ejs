@@ -1,0 +1,34 @@
+<aside id="layout-menu" class="layout-menu-horizontal menu-horizontal menu bg-menu-theme flex-grow-0">
+    <div class="container-xxl d-flex h-100">
+        <ul class="menu-inner py-1">
+            <li class="menu-item" id="dashboard-upnav">
+                <span onclick="route('/')" class="menu-link">
+                    <i class="menu-icon tf-icons ti ti-smart-home"></i>
+                    Ana Sayfa
+                </span>
+            </li>
+
+            <li class="menu-item" id="erp-upnav">
+                <a href="javascript:void(0)" class="menu-link menu-toggle">
+                    <i class="menu-icon tf-icons ti ti-layout-sidebar"></i>
+                    ERP Listesi
+                </a>
+
+                <ul class="menu-sub">
+                    <li class="menu-item" id="erp-invoices-nav">
+                        <span onclick="route('/erp/invoice')" class="menu-link">
+                            <i class="menu-icon tf-icons ti ti-menu-2"></i>
+                            Fatura
+                        </span>
+                    </li>
+                    <li class="menu-item" id="erp-despatches-nav">
+                        <span onclick="route('/erp/despatch')" class="menu-link">
+                            <i class="menu-icon tf-icons ti ti-layout-distribute-vertical"></i>
+                            İrsaliye
+                        </span>
+                    </li>
+                </ul>
+            </li>
+        </ul>
+    </div>
+</aside>
