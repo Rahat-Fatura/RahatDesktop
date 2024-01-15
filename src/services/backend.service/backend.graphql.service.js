@@ -1,154 +1,7 @@
 const httpStatus = require('http-status');
-const { graphqlClient } = require('../../utils/backendInstance');
+const { graphqlClient } = require('../../instances/backend.instance');
 const ApiError = require('../../utils/ApiError');
 const logger = require('../../config/logger');
-
-const getAllCompanies = async (token) => {
-  try {
-    const query = `
-      query {
-        getAllCompanies {
-          accountant_id
-          address
-          city
-          country
-          created_at
-          email
-          id
-          name
-          phone
-          status
-          tax_number
-          tax_office
-        }
-      }
-    `;
-    const response = await graphqlClient.request(
-      query,
-      {},
-      {
-        Authorization: token,
-      },
-    );
-    return response.getAllCompanies;
-  } catch (error) {
-    logger.error(error);
-    throw new ApiError(httpStatus.BAD_REQUEST, error.message);
-  }
-};
-
-const createCompany = async (company, token) => {
-  try {
-    const mutation = `
-      mutation ($company: CreateCompanyInput!) {
-        createCompany(data: $company) {
-          id
-        }
-      }
-    `;
-    const response = await graphqlClient.request(
-      mutation,
-      {
-        company,
-      },
-      {
-        Authorization: token,
-      },
-    );
-    return response.createCompany;
-  } catch (error) {
-    logger.error(error);
-    throw new ApiError(httpStatus.BAD_REQUEST, error.message);
-  }
-};
-
-const getCompanyById = async (id, token) => {
-  try {
-    const query = `
-      query ($id: Int!) {
-        getCompanyById(id: $id) {
-          address
-          city
-          country
-          created_at
-          email
-          id
-          name
-          phone
-          status
-          tax_number
-          tax_office
-        }
-      }
-    `;
-    const response = await graphqlClient.request(
-      query,
-      {
-        id: Number(id),
-      },
-      {
-        Authorization: token,
-      },
-    );
-    return response.getCompanyById;
-  } catch (error) {
-    logger.error(error);
-    throw new ApiError(httpStatus.BAD_REQUEST, error.message);
-  }
-};
-
-const getInvoicesByCompanyId = async (id, token) => {
-  try {
-    const query = `
-    query {
-      getInvoicesByCompanyId(id: ${Number(id)}) {
-        id
-        uuid
-        type_code
-        tickets
-        tax_total
-        tax_subtotals
-        tax_inclusive
-        tax_exclusive
-        system_type
-        sender_object
-        sender_name
-        sender_tax
-        receiver_object
-        receiver_name
-        receiver_tax
-        profile_id
-        payable_amount
-        ownerships
-        number
-        lines
-        line_extension
-        issue_datetime
-        integrator
-        envelope_uuid
-        envelope_datetime
-        direction
-        currency_code
-        charge_total
-        allowance_total
-        additional_columns
-        is_accounted
-      }
-    }
-    `;
-    const response = await graphqlClient.request(
-      query,
-      {},
-      {
-        Authorization: token,
-      },
-    );
-    return response.getInvoicesByCompanyId;
-  } catch (error) {
-    logger.error(error);
-    throw new ApiError(httpStatus.BAD_REQUEST, error.message);
-  }
-};
 
 const getApps = async () => {
   try {
@@ -182,16 +35,206 @@ const getCompany = async (key) => {
     const response = await graphqlClient.request(query, {}, { apikey: key });
     return response.getCompany;
   } catch (error) {
+    if (error.response.errors[0].message === 'Şirket bulunamadı!') {
+      return {};
+    }
+    throw new ApiError(httpStatus.BAD_REQUEST, error.response.errors[0].message);
+  }
+};
+
+const getAppVariables = async (id) => {
+  try {
+    const query = `
+      query getAppVariables {
+        getAppVariables(id: ${id})
+      }`;
+    const response = await graphqlClient.request(query);
+    return response.getAppVariables;
+  } catch (error) {
+    logger.error(error);
+    throw new ApiError(httpStatus.BAD_REQUEST, error.response.errors[0].message);
+  }
+};
+
+const createCompany = async (mssql, appId, variables, key) => {
+  try {
+    const mutation = `
+      mutation ($mssql: String!, $appId: Int, $variables: JSON!) {
+          createCompany(mssql: $mssql, appId: $appId, variables: $variables) {
+              id
+              code
+              key
+              status
+          }
+      }
+    `;
+    const response = await graphqlClient.request(
+      mutation,
+      {
+        mssql: String(mssql),
+        appId: Number(appId),
+        variables,
+      },
+      { apikey: key },
+    );
+    return response.createCompany;
+  } catch (error) {
+    logger.error(error);
+    throw new ApiError(httpStatus.BAD_REQUEST, error.response.errors[0].message);
+  }
+};
+
+const getCompanyQueries = async (key) => {
+  try {
+    const query = `
+      query GetCompany {
+        getCompany {
+            Queries {
+                queries
+                type
+            }
+        }
+      }`;
+    const response = await graphqlClient.request(query, {}, { apikey: key });
+    return response.getCompany;
+  } catch (error) {
+    logger.error(error);
+    throw new ApiError(httpStatus.BAD_REQUEST, error.response.errors[0].message);
+  }
+};
+
+const getCompanyConfig = async (key) => {
+  try {
+    const query = `
+      query GetCompany {
+        getCompany {
+            Configs {
+              config
+            }
+          }
+        }`;
+    const response = await graphqlClient.request(query, {}, { apikey: key });
+    return response.getCompany.Configs[0].config;
+  } catch (error) {
+    logger.error(error);
+    throw new ApiError(httpStatus.BAD_REQUEST, error.response.errors[0].message);
+  }
+};
+
+const updateInvoiceConfig = async (key, queries) => {
+  try {
+    const mutation = `
+      mutation UpdateCompany($queries: JSON) {
+        updateCompany(invoiceQueries: $queries) {
+            id
+        }
+      }`;
+    const response = await graphqlClient.request(mutation, { queries }, { apikey: key });
+    return response.updateCompany;
+  } catch (error) {
+    logger.error(error);
+    throw new ApiError(httpStatus.BAD_REQUEST, error.response.errors[0].message);
+  }
+};
+
+const updateDespatchConfig = async (key, queries) => {
+  try {
+    const mutation = `
+      mutation UpdateCompany($queries: JSON) {
+        updateCompany(despatchQueries: $queries) {
+            id
+        }
+      }`;
+    const response = await graphqlClient.request(mutation, { queries }, { apikey: key });
+    return response.updateCompany;
+  } catch (error) {
+    logger.error(error);
+    throw new ApiError(httpStatus.BAD_REQUEST, error.response.errors[0].message);
+  }
+};
+
+const updateCompanyConfig = async (key, config) => {
+  try {
+    const mutation = `
+      mutation UpdateCompany($config: JSON) {
+        updateCompany(config: $config) {
+            id
+        }
+      }`;
+    const response = await graphqlClient.request(mutation, { config }, { apikey: key });
+    return response.updateCompany;
+  } catch (error) {
+    logger.error(error);
+    throw new ApiError(httpStatus.BAD_REQUEST, error.response.errors[0].message);
+  }
+};
+
+const createDocument = async (key, document) => {
+  try {
+    const mutation = `
+      mutation CreateDocument($document: DocInput!) {
+        createDocument(doc: $document) {
+            id
+        }
+      }`;
+    const response = await graphqlClient.request(mutation, { document }, { apikey: key });
+    return response.createDocument;
+  } catch (error) {
+    logger.error(error);
+    throw new ApiError(httpStatus.BAD_REQUEST, error.response.errors[0].message);
+  }
+};
+
+const updateDocument = async (key, docId, document) => {
+  try {
+    const mutation = `
+      mutation UpdateDocument($id: Int!, $document: DocInput!) {
+        updateDocument(id:$id, doc: $document) {
+            id
+        }
+      }`;
+    const response = await graphqlClient.request(mutation, { id: docId, document }, { apikey: key });
+    return response.updateDocument;
+  } catch (error) {
+    logger.error(error);
+    throw new ApiError(httpStatus.BAD_REQUEST, error.response.errors[0].message);
+  }
+};
+
+const getDocuments = async (key) => {
+  try {
+    const query = `
+      query GetDocuments {
+        getDocuments {
+            id
+            external_id
+            external_code
+            json
+            status
+            status_desc
+            sending_type
+            type
+        }
+      }`;
+    const response = await graphqlClient.request(query, {}, { apikey: key });
+    return response.getDocuments;
+  } catch (error) {
+    logger.error(error);
     throw new ApiError(httpStatus.BAD_REQUEST, error.response.errors[0].message);
   }
 };
 
 module.exports = {
-  getAllCompanies,
-  createCompany,
-  getCompanyById,
-  getInvoicesByCompanyId,
-
   getApps,
   getCompany,
+  getAppVariables,
+  createCompany,
+  getCompanyQueries,
+  getCompanyConfig,
+  updateInvoiceConfig,
+  updateDespatchConfig,
+  updateCompanyConfig,
+  createDocument,
+  updateDocument,
+  getDocuments,
 };

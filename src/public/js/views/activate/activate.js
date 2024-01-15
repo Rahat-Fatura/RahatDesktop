@@ -1,7 +1,7 @@
 $(document).ready(() => {
   $('#activateBtn').click(() => {
     $('#activateBtn').addClass('disabled');
-    $('#activateBtn').html("<i class='fa fa-spinner fa-spin'></i> Activating...");
+    $('#activateBtn').html("<i class='fa fa-spinner fa-spin me-3'></i> Kontrol ediliyor...");
     $.ajax({
       url: '/activate',
       type: 'POST',
@@ -9,18 +9,36 @@ $(document).ready(() => {
         key: $('#apikey').val(),
       },
       success: (data) => {
-        $('#activateBtn').html("<i class='fa fa-check'></i> Activated!");
-        setTimeout(() => {
-          // window.location.href = "http://localhost:3000";
-        }, 1000);
+        console.log(data);
+        $('#activateBtn').removeClass('disabled');
+        $('#activateBtn').html('Aktive Et');
+        Swal.fire({
+          title: 'Başarılı!',
+          text: `Aktivasyon başarılı. ${
+            data.isActivated
+              ? 'Uygulamayı kapatılacaktır. Lütfen yeniden açınız!'
+              : 'Devam etmek için devam et butonuna tıklayın.'
+          }`,
+          icon: 'success',
+          confirmButtonText: 'Devam et',
+        }).then(() => {
+          if (data.isActivated) {
+            ipc.send('quit');
+          } else window.location.href = '/activate/setup';
+        });
       },
       error: (err) => {
         console.log(err);
-        $('#activateBtn').removeClass('disabled');
-        $('#activateBtn').html("<i class='fa fa-check'></i> Activate");
-        $('#apikey').val('');
-        $('#apikey').focus();
-        $('#error').html(err.responseJSON.message);
+        Swal.fire({
+          title: 'Hata!',
+          text: 'Key bilginiz geçersiz. Detay: ' + err.responseJSON.message,
+          icon: 'error',
+          confirmButtonText: 'Tekrar dene',
+        }).then(() => {
+          $('#activateBtn').removeClass('disabled');
+          $('#activateBtn').html('Aktive Et');
+          $('#apikey').focus();
+        });
       },
     });
   });

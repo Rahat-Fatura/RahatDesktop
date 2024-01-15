@@ -1,8 +1,9 @@
 const electronApp = require('electron').app;
-const { BrowserWindow, nativeImage, Tray, Menu, Notification, ipcMain } = require('electron');
+const { BrowserWindow, nativeImage, Tray, Menu, ipcMain } = require('electron');
 const fs = require('fs');
 const path = require('path');
 const config = require('./config');
+const consumers = require('./rmq.consumers');
 
 // config.clear();
 
@@ -32,7 +33,7 @@ const initialize = (app, port) => {
     });
   };
 
-  electronApp.whenReady().then(() => {
+  electronApp.whenReady().then(async () => {
     createWindow();
     tray = new Tray(
       nativeImage
@@ -174,9 +175,7 @@ const initialize = (app, port) => {
       }
     });
 
-    // const NOTIFICATION_TITLE = 'RahatDesktop';
-    // const NOTIFICATION_BODY = 'Belgeleriniz gönderilmeye hazırdır!';
-    // new Notification({ title: NOTIFICATION_TITLE, body: NOTIFICATION_BODY }).show();
+    await consumers.consumeTunnel(app);
   });
 
   ipcMain.on('close', () => {
@@ -205,6 +204,10 @@ const initialize = (app, port) => {
 
   ipcMain.on('refresh', () => {
     mainWindow.reload();
+  });
+
+  ipcMain.on('quit', () => {
+    electronApp.quit();
   });
 
   electronApp.on('before-quit', () => {
