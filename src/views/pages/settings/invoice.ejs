@@ -10,10 +10,10 @@
     <!-- Layout wrapper -->
     <div class="layout-wrapper layout-navbar-full layout-horizontal layout-without-menu">
         <div class="layout-container">
-          <%- include('../../partials/navbar') %>
+            <%- include('../../partials/navbar') %>
             <div class="layout-page">
                 <div class="content-wrapper">
-                  <%- include('../../partials/menu') %>
+                    <%- include('../../partials/menu') %>
                     <div class="container-xxl flex-grow-1 container-p-y">
                         <div class="col-12">
                             <h6 class="text-muted">Fatura SQL Sorguları</h6>
@@ -55,10 +55,12 @@
                                                 </ul>
                                                 <div class="tab-content">
                                                     <div class="tab-pane fade show active" id="header-main" role="tabpanel">
-                                                        <textarea id="header_main_editor" name="header_main_editor" rows="20" class="form-control"></textarea>
+                                                        <div id="header_main_editor" class="header_main_editor" style="height:500px;border: 1px;border-radius: 10%;"></div>
+                                                        <!-- <textarea id="header_main_editor" name="header_main_editor" rows="20" class="form-control"></textarea> -->
                                                     </div>
                                                     <div class="tab-pane fade" id="header-notes" role="tabpanel">
-                                                        <textarea id="header_notes_editor" name="header_notes_editor" rows="20" class="form-control"></textarea>
+                                                      <div id="header_notes_editor" class="header_notes_editor" style="height:500px;border: 1px;border-radius: 10%;"></div>
+                                                        <!-- <textarea id="header_notes_editor" name="header_notes_editor" rows="20" class="form-control"></textarea> -->
                                                     </div>
                                                     <div class="tab-pane fade" id="header-despatches" role="tabpanel">
                                                         <textarea id="header_despatches_editor" name="header_despatches_editor" rows="20" class="form-control"></textarea>
@@ -134,6 +136,17 @@
         <div class="drag-target"></div>
     </div>
     <%- include('../../partials/theme_js') %>
+    <script>
+        var require = {
+            paths: {
+                'vs': 'https://cdnjs.cloudflare.com/ajax/libs/monaco-editor/0.45.0/min/vs'
+            }
+        };
+    </script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/monaco-editor/0.45.0/min/vs/loader.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/monaco-editor/0.45.0/min/vs/editor/editor.main.nls.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/monaco-editor/0.45.0/min/vs/editor/editor.main.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/monaco-editor/0.45.0/min/vs/basic-languages/sql/sql.min.js"></script>
 </body>
 
 </html>

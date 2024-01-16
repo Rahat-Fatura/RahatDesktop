@@ -3,6 +3,7 @@ const { settingsController } = require('../controllers');
 
 const router = express.Router();
 
+router.get('/', settingsController.getSettingsPage);
 router.get('/invoice', settingsController.getSettingsInvoicePage);
 router.get('/despatch', settingsController.getSettingsDespatchPage);
 router.get('/params', settingsController.getSettingsParamsPage);

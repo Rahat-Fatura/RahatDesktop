@@ -1,10 +1,11 @@
 const catchAsync = require('../utils/catchAsync');
 const config = require('../config/config');
 const { activateService } = require('../services');
+const isAppActive = require('../utils/appIsActive');
 
 const getActivatePage = (req, res) => {
   const key = config.get('apikey');
-  const isActivated = config.get('isActivated');
+  const isActivated = isAppActive();
   if (key && !isActivated) return res.redirect('/activate/setup');
   if (key && isActivated) return res.redirect('/');
   return res.render('pages/activate/activate', {
@@ -23,7 +24,7 @@ const activateKey = catchAsync(async (req, res) => {
   config.set('apikey', key);
   if (checked.id) config.set('isActivated', true);
   else config.set('isActivated', false);
-  return res.send({ id: checked.id, isActivated: config.get('isActivated') });
+  return res.send({ id: checked.id, isActivated: isAppActive() });
 });
 
 const getSetupPage = (req, res) => {

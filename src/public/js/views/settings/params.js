@@ -1,4 +1,12 @@
+let paramsEditor;
 $(document).ready(function () {
+  paramsEditor = monaco.editor.create(document.getElementById('monaco-editor-container'), {
+    value: ``,
+    language: 'json',
+    theme: 'vs',
+    automaticLayout: true,
+    scrollBeyondLastLine: false,
+  });
   $('.content-wrapper').block({
     message: `<div class="sk-wave sk-primary mx-auto">
       <div class="sk-rect sk-wave-rect">
@@ -21,6 +29,7 @@ $(document).ready(function () {
     type: 'GET',
     success: function (data) {
       $('.content-wrapper').unblock();
+      paramsEditor.setValue(JSON.stringify(data, null, 2));
       $('#company_config').val(JSON.stringify(data, null, 2));
     },
     error: function (err) {
@@ -55,7 +64,7 @@ $(document).ready(function () {
       url: '/settings/config/company',
       type: 'POST',
       data: {
-        companyConfig: JSON.parse($('#company_config').val()),
+        companyConfig: JSON.parse(paramsEditor.getValue()),
       },
       success: function (data) {
         $('.content-wrapper').unblock();

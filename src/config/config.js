@@ -8,7 +8,7 @@ const config = new Config(configPath);
 // config.clear();
 
 if (!config.get('url')) {
-  config.set('url', 'http://localhost:6781/v1');
+  config.set('url', 'http://192.168.1.100:6782/v1');
 }
 if (!config.get('apikey')) {
   config.set('apikey', '');

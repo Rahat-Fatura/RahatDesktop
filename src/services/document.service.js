@@ -79,9 +79,15 @@ const deleteDocument = async (id, documentType) => {
   return { success: true };
 };
 
+const getDocumentsById = async (id) => {
+  const documents = await backendService.graphql.getDocumentsById(config.get('apikey'), id);
+  return documents;
+};
+
 module.exports = {
   createDocumentRecord,
   updateDocumentRecord,
   upsertDocument,
   deleteDocument,
+  getDocumentsById,
 };

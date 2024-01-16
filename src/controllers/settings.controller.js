@@ -1,5 +1,24 @@
+const path = require('path');
+const { app } = require('electron');
 const catchAsync = require('../utils/catchAsync');
 const { settingsService } = require('../services');
+
+const logsPath = path.join(app.getPath('userData'), '/logs');
+
+const getSettingsPage = async (req, res) => {
+  return res.render('pages/settings/settings', {
+    page: {
+      name: 'settings',
+      display: 'Ayarlar',
+      menu: 'settings',
+      uppermenu: 'settings',
+    },
+    data: {
+      logsPath,
+      autoLaunch: await req.app.get('AutoLauncher').isEnabled(),
+    },
+  });
+};
 
 const getSettingsInvoicePage = (req, res) => {
   return res.render('pages/settings/invoice', {
@@ -68,6 +87,7 @@ const updateCompanyConfig = catchAsync(async (req, res) => {
 });
 
 module.exports = {
+  getSettingsPage,
   getSettingsInvoicePage,
   getSettingsDespatchPage,
   getSettingsParamsPage,

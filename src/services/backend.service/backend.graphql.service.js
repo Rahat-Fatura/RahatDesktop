@@ -212,8 +212,31 @@ const getDocuments = async (key) => {
             json
             status
             status_desc
-            sending_type
-            type
+            movement_type
+            document_type
+        }
+      }`;
+    const response = await graphqlClient.request(query, {}, { apikey: key });
+    return response.getDocuments;
+  } catch (error) {
+    logger.error(error);
+    throw new ApiError(httpStatus.BAD_REQUEST, error.response.errors[0].message);
+  }
+};
+
+const getDocumentsById = async (key, id) => {
+  try {
+    const query = `
+      query getDocumentsById {
+        getDocuments (exId: ${id}){
+            id
+            external_id
+            external_code
+            json
+            status
+            status_desc
+            movement_type
+            document_type
         }
       }`;
     const response = await graphqlClient.request(query, {}, { apikey: key });
@@ -237,4 +260,5 @@ module.exports = {
   createDocument,
   updateDocument,
   getDocuments,
+  getDocumentsById,
 };

@@ -3,10 +3,10 @@ const { rahatsistem, documentService } = require('../services');
 const queryHelper = require('../helpers/query.helper');
 const { instance } = require('../instances/rmq.instance');
 const logger = require('./logger');
-const config = require('./config');
+const isAppActive = require('../utils/appIsActive');
 
 const consumeTunnel = async () => {
-  if (!config.get('isActivated')) {
+  if (!isAppActive()) {
     return;
   }
   let rmqCode;

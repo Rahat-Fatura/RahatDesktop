@@ -4,7 +4,6 @@
     <%- include('../../partials/header') %>
     <title><%= page.display %> - <%= app.name %></title>
     <%- include('../../partials/theme_css') %>
-    <link rel="stylesheet" data-name="vs/editor/editor.main" href="https://cdnjs.cloudflare.com/ajax/libs/monaco-editor/0.45.0/min/vs/editor/editor.main.min.css">
 </head>
 
 <body>
@@ -22,7 +21,7 @@
                                 <h5 class="card-header">Firma Parametreleri</h5>
                                 <div class="card-body">
                                     <div class="mb-3">
-                                        <div id="monaco-editor-container" class="monaco-editor-container" style="height:500px;border: 1px;border-radius: 10%;"></div>
+                                        <textarea id="company_config" name="company_config" rows="50" class="form-control"></textarea>
                                     </div>
                                     <div class="col-12 d-grid">
                                         <button id="save" type="button" class="btn btn-success waves-effect waves-light">Kaydet</button>
@@ -44,17 +43,6 @@
         <div class="drag-target"></div>
     </div>
     <%- include('../../partials/theme_js') %>
-    <script>
-        var require = {
-            paths: {
-                'vs': 'https://cdnjs.cloudflare.com/ajax/libs/monaco-editor/0.45.0/min/vs'
-            }
-        };
-    </script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/monaco-editor/0.45.0/min/vs/loader.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/monaco-editor/0.45.0/min/vs/editor/editor.main.nls.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/monaco-editor/0.45.0/min/vs/editor/editor.main.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/monaco-editor/0.45.0/min/vs/language/json/jsonMode.min.js"></script>
 </body>
 
 </html>
