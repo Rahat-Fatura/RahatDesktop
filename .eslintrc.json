@@ -12,6 +12,7 @@
     "func-names": "off",
     "no-underscore-dangle": "off",
     "consistent-return": "off",
-    "security/detect-object-injection": "off"
+    "security/detect-object-injection": "off",
+    "import/no-extraneous-dependencies": ["error", { "devDependencies": true }]
   }
 }

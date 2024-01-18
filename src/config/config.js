@@ -7,21 +7,26 @@ const config = new Config(configPath);
 
 // config.clear();
 
-if (!config.get('url')) {
-  config.set('url', 'http://192.168.1.100:6782/v1');
+if (!config.has('url')) {
+  config.set('url', 'https://localservice.rahatsistem.com.tr/v1');
 }
-if (!config.get('apikey')) {
+if (!config.has('apikey')) {
   config.set('apikey', '');
 }
-if (!config.get('isActivated')) {
+if (!config.has('isActivated')) {
   config.set('isActivated', false);
 }
-if (!config.get('port')) {
+if (!config.has('port')) {
   config.set('port', '6782');
 }
-
-if (!config.get('notification')) {
+if (!config.has('notification')) {
   config.set('notification', { success: false, notify: false, error: true });
+}
+if (!config.has('cron')) {
+  config.set('cron', false);
+}
+if (!config.has('rmq')) {
+  config.set('rmq', true);
 }
 
 module.exports = config;
