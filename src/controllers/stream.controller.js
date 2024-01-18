@@ -16,7 +16,7 @@ const updateInvoice = catchAsync(async (req, res) => {
 const deleteInvoice = catchAsync(async (req, res) => {
   res.send(true);
   const { exId } = req.params;
-  await documentService.upsertDocument(exId, 'delete', 'invoice');
+  await documentService.deleteDocument(exId, 'invoice');
 });
 
 const insertDespatch = catchAsync(async (req, res) => {
@@ -34,7 +34,7 @@ const updateDespatch = catchAsync(async (req, res) => {
 const deleteDespatch = catchAsync(async (req, res) => {
   res.send(true);
   const { exId } = req.params;
-  await documentService.upsertDocument(exId, 'delete', 'despatch');
+  await documentService.upsertDocument(exId, 'despatch');
 });
 
 module.exports = {

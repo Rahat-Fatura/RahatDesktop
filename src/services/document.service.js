@@ -36,10 +36,10 @@ const upsertDocument = async (id, movementType, documentType) => {
   const doc = await createDocumentRecord(id, '0', null, 'upsert.notify', movementType, documentType);
   let docJson;
   try {
-    // TODO: Create document JSON from local database
     if (documentType === 'invoice') {
       docJson = await createInvoiceJson(id);
     } else if (documentType === 'despatch') {
+      // TODO: Create document JSON from local database
       throw new Error('Despatch not implemented yet.');
       // docJson = await createDespatchJson(id);
     }
@@ -51,12 +51,10 @@ const upsertDocument = async (id, movementType, documentType) => {
   const exRefNo = docJson.document.External.RefNo;
   await updateDocumentRecord(doc.id, id, exRefNo, docJson, 'upsert.create', movementType, documentType);
   try {
-    // TODO: Send to connect service
     if (documentType === 'invoice') {
       await rahatsistem.upsertInvoice(docJson);
     } else if (documentType === 'despatch') {
-      throw new Error('Despatch not implemented yet.');
-      // await rahatsistem.upsertDespatch(docJson);
+      await rahatsistem.upsertDespatch(docJson);
     }
   } catch (error) {
     logger.error(error);
@@ -70,7 +68,11 @@ const upsertDocument = async (id, movementType, documentType) => {
 const deleteDocument = async (id, documentType) => {
   const doc = await createDocumentRecord(id, '0', null, 'delete.notify', 'delete', documentType);
   try {
-    // TODO: DELETE document from connect service
+    if (documentType === 'invoice') {
+      await rahatsistem.deleteInvoice(id);
+    } else if (documentType === 'despatch') {
+      await rahatsistem.deleteDespatch(id);
+    }
   } catch (error) {
     await updateDocumentRecord(doc.id, id, '0', null, 'delete.error', 'delete', documentType, error);
     return { success: false, error };
