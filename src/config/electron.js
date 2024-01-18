@@ -1,4 +1,4 @@
-const { app, BrowserWindow, shell } = require('electron');
+const { app, BrowserWindow } = require('electron');
 const AutoLaunch = require('auto-launch');
 const consumers = require('./rmq.consumers');
 const cronInit = require('./cron');
