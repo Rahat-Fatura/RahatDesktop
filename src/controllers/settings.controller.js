@@ -2,6 +2,7 @@ const path = require('path');
 const { app } = require('electron');
 const catchAsync = require('../utils/catchAsync');
 const { settingsService } = require('../services');
+const config = require('../config/config');
 
 const logsPath = path.join(app.getPath('userData'), '/logs');
 
@@ -16,6 +17,8 @@ const getSettingsPage = async (req, res) => {
     data: {
       logsPath,
       autoLaunch: await req.app.get('AutoLauncher').isEnabled(),
+      cron: config.get('cron'),
+      rmq: config.get('rmq'),
     },
   });
 };

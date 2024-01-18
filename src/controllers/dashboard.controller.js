@@ -1,6 +1,7 @@
 const path = require('path');
 const { app } = require('electron');
 const catchAsync = require('../utils/catchAsync');
+const config = require('../config/config');
 
 const getDashboardPage = async (req, res) => {
   const logsPath = path.join(app.getPath('userData'), '/logs');
@@ -30,8 +31,32 @@ const deactivateAutoLaunch = catchAsync(async (req, res) => {
   return res.json({ success: true });
 });
 
+const activateCron = catchAsync(async (req, res) => {
+  config.set('cron', true);
+  return res.json({ success: true });
+});
+
+const deactivateCron = catchAsync(async (req, res) => {
+  config.set('cron', false);
+  return res.json({ success: true });
+});
+
+const activateRMQ = catchAsync(async (req, res) => {
+  config.set('rmq', true);
+  return res.json({ success: true });
+});
+
+const deactivateRMQ = catchAsync(async (req, res) => {
+  config.set('rmq', false);
+  return res.json({ success: true });
+});
+
 module.exports = {
   getDashboardPage,
   activateAutoLaunch,
   deactivateAutoLaunch,
+  activateCron,
+  deactivateCron,
+  activateRMQ,
+  deactivateRMQ,
 };

@@ -2,9 +2,10 @@
 const cron = require('node-cron');
 const { Notification } = require('electron');
 const queryHelper = require('../helpers/query.helper');
-const { settingsService, documentService } = require('../services');
+const config = require('./config');
 const logger = require('./logger');
 const isAppActive = require('../utils/appIsActive');
+const { settingsService, documentService } = require('../services');
 
 const checkUnsendedInvoices = async (app) => {
   if (app.get('isSendingInvoices')) {
@@ -93,7 +94,8 @@ const checkUnsendedDespatches = async (app) => {
 };
 
 const initCron = async (app) => {
-  if (!isAppActive()) {
+  if (!isAppActive() || !config.get('cron')) {
+    logger.info('Cron is not activated.');
     return;
   }
   const companyConfig = await settingsService.getCompanyConfig();

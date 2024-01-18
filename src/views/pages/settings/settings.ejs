@@ -76,7 +76,50 @@
                                                         <i class="ti ti-x"></i>
                                                     </span>
                                                 </span>
-                                                <span class="switch-label">Bilgisayar açılışında otomatik açılsın</span>
+                                                <span class="switch-label">
+                                                    <span class="badge badge-center rounded-pill bg-label-dark ms-2 me-2" data-bs-toggle="tooltip" data-bs-placement="right" data-bs-custom-class="tooltip-label-dark" data-bs-original-title="Eğer seçenek aktifse, bilgisayar açıldığında uygulama otomatik olarak açılır.">
+                                                        <i class="ti ti-question-mark"></i>
+                                                    </span>
+                                                    Açılışta otomatik açılsın (Önerilir)
+                                                </span>
+                                            </label>
+                                        </div>
+                                        <div class="mb-3">
+                                            <label class="switch switch-square switch-lg switch-success">
+                                                <input id="cron-checkbox" type="checkbox" class="switch-input" <% if(data.cron) { %> checked <% } %>>
+                                                <span class="switch-toggle-slider">
+                                                    <span class="switch-on">
+                                                        <i class="ti ti-check"></i>
+                                                    </span>
+                                                    <span class="switch-off">
+                                                        <i class="ti ti-x"></i>
+                                                    </span>
+                                                </span>
+                                                <span class="switch-label">
+                                                    <span class="badge badge-center rounded-pill bg-label-dark ms-2 me-2" data-bs-toggle="tooltip" data-bs-placement="right" data-bs-custom-class="tooltip-label-dark" data-bs-original-title="Eğer seçenek aktifse, entegre uygulama düzenli olarak sorgulanır. Daha önce gönderilmemiş belge var ise otomatik gönderir.">
+                                                        <i class="ti ti-question-mark"></i>
+                                                    </span>
+                                                    Düzenli veritabanı sorgusu
+                                                </span>
+                                            </label>
+                                        </div>
+                                        <div class="mb-3">
+                                            <label class="switch switch-square switch-lg switch-success">
+                                                <input id="rmq-checkbox" type="checkbox" class="switch-input" <% if(data.rmq) { %> checked <% } %>>
+                                                <span class="switch-toggle-slider">
+                                                    <span class="switch-on">
+                                                        <i class="ti ti-check"></i>
+                                                    </span>
+                                                    <span class="switch-off">
+                                                        <i class="ti ti-x"></i>
+                                                    </span>
+                                                </span>
+                                                <span class="switch-label">
+                                                    <span class="badge badge-center rounded-pill bg-label-dark ms-2 me-2" data-bs-toggle="tooltip" data-bs-placement="right" data-bs-custom-class="tooltip-label-dark" data-bs-original-title="Eğer seçenek aktifse, uzak sistem dinlemeye başlanır. Sistem üzerinden fatura yenileme, fatura numarası güncelleme bildirimleri vs. gelirse ilgili işlemi gerçekleştirir.">
+                                                        <i class="ti ti-question-mark"></i>
+                                                    </span>
+                                                    Uzak sistem dinleme
+                                                </span>
                                             </label>
                                         </div>
                                         <hr>

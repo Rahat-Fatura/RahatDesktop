@@ -2,11 +2,13 @@ const { Notification } = require('electron');
 const { rahatsistem, documentService } = require('../services');
 const queryHelper = require('../helpers/query.helper');
 const { instance } = require('../instances/rmq.instance');
-const logger = require('./logger');
 const isAppActive = require('../utils/appIsActive');
+const config = require('./config');
+const logger = require('./logger');
 
 const consumeTunnel = async () => {
-  if (!isAppActive()) {
+  if (!isAppActive() || !config.get('rmq')) {
+    logger.info('RahatDesktop is not active or RMQ is not activated.');
     return;
   }
   let rmqCode;
@@ -20,10 +22,13 @@ const consumeTunnel = async () => {
     return;
   }
   // eslint-disable-next-line no-unused-vars
-  const [_c, channel] = await instance('localapp_coms');
+  const connection = await instance('localapp_coms');
   const queue = `localApp.tunnel.${rmqCode}.edoc`;
-  await channel.assertQueue(queue, {
-    durable: true,
+  const channel = connection.createChannel({
+    json: true,
+    setup: (cha) => {
+      return cha.assertQueue(queue, { durable: true });
+    },
   });
 
   const NOTIFICATION_TITLE = 'RahatDesktop Aktif';
