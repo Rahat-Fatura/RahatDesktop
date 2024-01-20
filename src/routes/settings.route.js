@@ -18,4 +18,8 @@ router
   .get('/config/company', settingsController.getCompanyConfig)
   .post('/config/company', settingsController.updateCompanyConfig);
 
+router.put('/general.nbs/:status', settingsController.toggleNumberBeforeSend);
+router.put('/document.nbs/document/serie', settingsController.updateDocumentSerie);
+router.put('/document.nbs/:docType/:status', settingsController.toggleDocumentNumberBeforeSend);
+
 module.exports = router;

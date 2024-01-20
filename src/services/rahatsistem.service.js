@@ -25,10 +25,16 @@ const getRMQCode = async () => {
   return data;
 };
 
+const checkLiability = async (tax) => {
+  const { data } = await (await instance()).get(`/connect/check/liability/${tax}`);
+  return data;
+};
+
 module.exports = {
   upsertInvoice,
   deleteInvoice,
   upsertDespatch,
   deleteDespatch,
   getRMQCode,
+  checkLiability,
 };

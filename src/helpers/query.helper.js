@@ -1,8 +1,11 @@
 /* eslint-disable dot-notation */
 /* eslint-disable no-await-in-loop */
 const dateAndTime = require('date-and-time');
-const { connect } = require('../utils/mssql');
+const addZero = require('add-zero');
+const config = require('../config/config');
 const { settingsService } = require('../services');
+const rahatsistem = require('../services/rahatsistem.service');
+const { connect } = require('../utils/mssql');
 
 const normalizeQueries = async (invoiceConfig, variables) => {
   const { queries } = invoiceConfig;
@@ -20,9 +23,74 @@ const normalizeQueries = async (invoiceConfig, variables) => {
   return queries;
 };
 
-const runAllInvoiceQuery = async (id) => {
+const runUpdateInvoiceNumberQuery = async (id, newNumber) => {
   const invoiceConfig = await settingsService.getInvoiceConfig();
   const companyConfig = await settingsService.getCompanyConfig();
+  const queries = await normalizeQueries(invoiceConfig, companyConfig.variables);
+  const updateInvoiceNumberQuery = queries.update_number;
+  if (!updateInvoiceNumberQuery) throw new Error('Fatura numarası güncelleme sorgusu bulunamadı.');
+  const sql = await connect();
+  await sql.input('erpId', id).input('invNo', newNumber);
+  await sql.query(updateInvoiceNumberQuery);
+  return true;
+};
+
+const runUpdateDespatchNumberQuery = async (id, newNumber) => {
+  const despatchConfig = await settingsService.getDespatchConfig();
+  const companyConfig = await settingsService.getCompanyConfig();
+  const queries = await normalizeQueries(despatchConfig, companyConfig.variables);
+  const updateDespatchNumberQuery = queries.update_number;
+  if (!updateDespatchNumberQuery) throw new Error('İrsaliye numarası güncelleme sorgusu bulunamadı.');
+  const sql = await connect();
+  await sql.input('erpId', id).input('dsp', newNumber);
+  await sql.query(updateDespatchNumberQuery);
+  return true;
+};
+
+const checkLiability = async (tax) => {
+  let liability;
+  try {
+    await rahatsistem.checkLiability(tax);
+    liability = 'einvoice';
+  } catch (error) {
+    if (JSON.parse(error.message).code === 404) {
+      liability = 'earchive';
+    } else {
+      throw new Error(error);
+    }
+  }
+  return liability;
+};
+
+const updateNewNumber = async (compConf, id, tax, datetime) => {
+  const companyConfig = compConf;
+  const liability = await checkLiability(tax);
+  const userSerie = config.get(`nbsDocuments.${liability}.serie`);
+  if (!userSerie) throw new Error('Önceden numaralandırma aktif edilmiş ancak seri tanımlanmamış!');
+  const isActiveByLiability = companyConfig.settings.nbsDocuments[liability].numbering;
+  if (isActiveByLiability) {
+    const invoiceYear = dateAndTime.format(new Date(datetime), 'YYYY', true);
+    if (!companyConfig.settings.nbsDocuments[liability]['series'])
+      companyConfig.settings.nbsDocuments[liability]['series'] = {};
+    if (!companyConfig.settings.nbsDocuments[liability]['series'][userSerie])
+      companyConfig.settings.nbsDocuments[liability]['series'][userSerie] = {};
+    if (!companyConfig.settings.nbsDocuments[liability]['series'][userSerie][invoiceYear])
+      companyConfig.settings.nbsDocuments[liability]['series'][userSerie][invoiceYear] = 0;
+    const lastNumber = companyConfig.settings.nbsDocuments[liability]['series'][userSerie][invoiceYear];
+    const newNumber = lastNumber + 1;
+    const newInvoiceNumber = `${userSerie}${invoiceYear}${addZero(newNumber, 9)}`;
+    if (newInvoiceNumber.length !== 16)
+      throw new Error(`Oluşturulan fatura numarası 16 haneden farklı oluştu! Numara: ${newInvoiceNumber}`);
+    await runUpdateInvoiceNumberQuery(id, newInvoiceNumber);
+    companyConfig.settings.nbsDocuments[liability]['series'][userSerie][invoiceYear] = newNumber;
+    await settingsService.updateCompanyConfig(companyConfig);
+  }
+  return true;
+};
+
+const runAllInvoiceQuery = async (id) => {
+  const invoiceConfig = await settingsService.getInvoiceConfig();
+  let companyConfig = await settingsService.getCompanyConfig();
   const queries = await normalizeQueries(invoiceConfig, companyConfig.variables);
   const sql = await connect();
   const results = {
@@ -39,6 +107,11 @@ const runAllInvoiceQuery = async (id) => {
     throw new Error('Fatura, ilgili SQL sorgusunda bulunamadı.');
   }
   [results.customer] = (await sql.query(queries.customer)).recordset;
+  if (companyConfig.settings.numberBeforeSending && results.main.NumberOrSerie && results.main.NumberOrSerie.length !== 16) {
+    await updateNewNumber(companyConfig, id, results.customer.TaxNumber, results.main.IssueDateTime);
+    companyConfig = await settingsService.getCompanyConfig();
+    [results.main] = (await sql.query(queries.main)).recordset;
+  }
   results.lines = (await sql.query(queries.lines)).recordset;
   if (queries.notes) {
     results.notes = (await sql.query(queries.notes)).recordset;
@@ -118,30 +191,6 @@ const runCheckUnsendedDespatchQuery = async () => {
   await sql.input('dateTime', dateTime);
   const results = (await sql.query(unsendedDespatchQuery)).recordset;
   return results;
-};
-
-const runUpdateInvoiceNumberQuery = async (id, newNumber) => {
-  const invoiceConfig = await settingsService.getInvoiceConfig();
-  const companyConfig = await settingsService.getCompanyConfig();
-  const queries = await normalizeQueries(invoiceConfig, companyConfig.variables);
-  const updateInvoiceNumberQuery = queries.update_number;
-  if (!updateInvoiceNumberQuery) throw new Error('Fatura numarası güncelleme sorgusu bulunamadı.');
-  const sql = await connect();
-  await sql.input('erpId', id).input('invNo', newNumber);
-  await sql.query(updateInvoiceNumberQuery);
-  return true;
-};
-
-const runUpdateDespatchNumberQuery = async (id, newNumber) => {
-  const despatchConfig = await settingsService.getDespatchConfig();
-  const companyConfig = await settingsService.getCompanyConfig();
-  const queries = await normalizeQueries(despatchConfig, companyConfig.variables);
-  const updateDespatchNumberQuery = queries.update_number;
-  if (!updateDespatchNumberQuery) throw new Error('İrsaliye numarası güncelleme sorgusu bulunamadı.');
-  const sql = await connect();
-  await sql.input('erpId', id).input('dsp', newNumber);
-  await sql.query(updateDespatchNumberQuery);
-  return true;
 };
 
 module.exports = {

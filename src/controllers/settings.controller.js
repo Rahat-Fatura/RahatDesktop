@@ -1,5 +1,6 @@
 const path = require('path');
 const { app } = require('electron');
+const httpStatus = require('http-status');
 const catchAsync = require('../utils/catchAsync');
 const { settingsService } = require('../services');
 const config = require('../config/config');
@@ -7,6 +8,7 @@ const config = require('../config/config');
 const logsPath = path.join(app.getPath('userData'), '/logs');
 
 const getSettingsPage = async (req, res) => {
+  const companyConfig = await settingsService.getCompanyConfig();
   return res.render('pages/settings/settings', {
     page: {
       name: 'settings',
@@ -19,6 +21,17 @@ const getSettingsPage = async (req, res) => {
       autoLaunch: await req.app.get('AutoLauncher').isEnabled(),
       cron: config.get('cron'),
       rmq: config.get('rmq'),
+      numberBeforeSending: companyConfig.settings.numberBeforeSending,
+      nbs: {
+        einvoice: companyConfig.settings.nbsDocuments.einvoice.numbering,
+        earchive: companyConfig.settings.nbsDocuments.earchive.numbering,
+        edespatch: companyConfig.settings.nbsDocuments.edespatch.numbering,
+        series: {
+          einvoice: config.has('nbsDocuments.einvoice.serie') ? config.get('nbsDocuments.einvoice.serie') : null,
+          earchive: config.has('nbsDocuments.earchive.serie') ? config.get('nbsDocuments.earchive.serie') : null,
+          edespatch: config.has('nbsDocuments.edespatch.serie') ? config.get('nbsDocuments.edespatch.serie') : null,
+        },
+      },
     },
   });
 };
@@ -89,6 +102,31 @@ const updateCompanyConfig = catchAsync(async (req, res) => {
   return res.send(updatedCompany);
 });
 
+const toggleNumberBeforeSend = catchAsync(async (req, res) => {
+  const { status } = req.params;
+  const companyConfig = await settingsService.getCompanyConfig();
+  companyConfig.settings.numberBeforeSending = status === 'activate';
+  await settingsService.updateCompanyConfig(companyConfig);
+  return res.send({ success: true });
+});
+
+const toggleDocumentNumberBeforeSend = catchAsync(async (req, res) => {
+  const { status, docType } = req.params;
+  const companyConfig = await settingsService.getCompanyConfig();
+  companyConfig.settings.nbsDocuments[docType].numbering = status === 'activate';
+  await settingsService.updateCompanyConfig(companyConfig);
+  return res.send({ success: true });
+});
+
+const updateDocumentSerie = catchAsync(async (req, res) => {
+  const { docType, serie } = req.body;
+  if (['einvoice', 'earchive', 'edespatch'].indexOf(docType) === -1) {
+    return res.status(httpStatus.BAD_REQUEST).send({ success: false });
+  }
+  config.set(`nbsDocuments.${docType}.serie`, serie);
+  return res.send({ success: true });
+});
+
 module.exports = {
   getSettingsPage,
   getSettingsInvoicePage,
@@ -100,4 +138,7 @@ module.exports = {
   updateInvoiceConfig,
   updateDespatchConfig,
   updateCompanyConfig,
+  toggleNumberBeforeSend,
+  toggleDocumentNumberBeforeSend,
+  updateDocumentSerie,
 };

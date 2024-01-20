@@ -28,27 +28,17 @@
                                                     <i class="ti ti-settings-cog ti-md rounded"></i>
                                                 </span>
                                             </div>
-                                            Genel
+                                            <div class="me-5">Genel</div>
                                         </button>
                                     </li>
                                     <li class="nav-item" role="presentation">
-                                        <button type="button" class="nav-link" role="tab" data-bs-toggle="tab" data-bs-target="#invoices-config" aria-controls="invoices-config" aria-selected="true">
+                                        <button type="button" class="nav-link" role="tab" data-bs-toggle="tab" data-bs-target="#getting-config" aria-controls="getting-config" aria-selected="true">
                                             <div class="avatar avatar me-3">
                                                 <span class="avatar-initial rounded bg-linkedin">
-                                                    <i class="ti ti-file-dollar ti-md rounded"></i>
+                                                    <i class="ti ti-table-export ti-md rounded"></i>
                                                 </span>
                                             </div>
-                                            Faturalar
-                                        </button>
-                                    </li>
-                                    <li class="nav-item" role="presentation">
-                                        <button type="button" class="nav-link" role="tab" data-bs-toggle="tab" data-bs-target="#despatches-config" aria-controls="despatches-config" aria-selected="false" tabindex="-1">
-                                            <div class="avatar avatar me-3">
-                                                <span class="avatar-initial rounded bg-warning">
-                                                    <i class="ti ti-file-invoice ti-md rounded"></i>
-                                                </span>
-                                            </div>
-                                            İrsaliyeler
+                                            <div class="me-5">Veri Çekme</div>
                                         </button>
                                     </li>
                                     <li class="nav-item" role="presentation">
@@ -58,12 +48,12 @@
                                                     <i class="ti ti-file-settings ti-md rounded"></i>
                                                 </span>
                                             </div>
-                                            Konfigürasyon
+                                            <div class="me-5">Konfigürasyon</div>
                                         </button>
                                     </li>
                                 </ul>
-                                <div class="tab-content">
-                                    <div class="tab-pane fade show active" id="app-config" role="tabpanel">
+                                <div class="tab-content p-0">
+                                    <div class="tab-pane fade p-4 show active" id="app-config" role="tabpanel">
                                         <h5 class="mb-4">Genel Ayarlar</h5>
                                         <div class="mb-3">
                                             <label class="switch switch-square switch-lg switch-success">
@@ -81,25 +71,6 @@
                                                         <i class="ti ti-question-mark"></i>
                                                     </span>
                                                     Açılışta otomatik açılsın (Önerilir)
-                                                </span>
-                                            </label>
-                                        </div>
-                                        <div class="mb-3">
-                                            <label class="switch switch-square switch-lg switch-success">
-                                                <input id="cron-checkbox" type="checkbox" class="switch-input" <% if(data.cron) { %> checked <% } %>>
-                                                <span class="switch-toggle-slider">
-                                                    <span class="switch-on">
-                                                        <i class="ti ti-check"></i>
-                                                    </span>
-                                                    <span class="switch-off">
-                                                        <i class="ti ti-x"></i>
-                                                    </span>
-                                                </span>
-                                                <span class="switch-label">
-                                                    <span class="badge badge-center rounded-pill bg-label-dark ms-2 me-2" data-bs-toggle="tooltip" data-bs-placement="right" data-bs-custom-class="tooltip-label-dark" data-bs-original-title="Eğer seçenek aktifse, entegre uygulama düzenli olarak sorgulanır. Daha önce gönderilmemiş belge var ise otomatik gönderir.">
-                                                        <i class="ti ti-question-mark"></i>
-                                                    </span>
-                                                    Düzenli veritabanı sorgusu
                                                 </span>
                                             </label>
                                         </div>
@@ -132,41 +103,173 @@
                                             </div>
                                         </div>
                                     </div>
-                                    <div class="tab-pane fade" id="invoices-config" role="tabpanel">
-                                        <div class="card mb-4">
-                                            <div class="card-body">
-                                                <div class="card-title header-elements mb-4">
-                                                    <h5 class="m-0 me-2">Fatura Parametreleri</h5>
-                                                    <div class="card-title-elements ms-auto">
-                                                        <button id="save-invoice-sqls" type="button" class="btn btn-sm btn-success waves-effect waves-light">Değişiklikleri Kaydet</button>
+                                    <div class="tab-pane fade ps-2" id="getting-config" role="tabpanel">
+                                        <div class="nav-align-left">
+                                            <ul class="nav nav-tabs" role="tablist">
+                                                <li class="nav-item mt-3" role="presentation">
+                                                    <button type="button" class="nav-link active" role="tab" data-bs-toggle="tab" data-bs-target="#getting-general-config" aria-controls="getting-general-config" aria-selected="true">
+                                                        <div class="avatar avatar-sm me-3">
+                                                            <span class="avatar-initial rounded bg-secondary">
+                                                                <i class="ti ti-settings-cog ti-sm rounded"></i>
+                                                            </span>
+                                                        </div>
+                                                        <div class="me-5">Genel</div>
+                                                    </button>
+                                                </li>
+                                                <li class="nav-item" role="presentation">
+                                                    <button type="button" class="nav-link" role="tab" data-bs-toggle="tab" data-bs-target="#getting-invoices-config" aria-controls="getting-invoices-config" aria-selected="true">
+                                                        <div class="avatar avatar-sm me-3">
+                                                            <span class="avatar-initial rounded bg-secondary">
+                                                                <i class="ti ti-file-dollar ti-sm rounded"></i>
+                                                            </span>
+                                                        </div>
+                                                        <div class="me-5">Faturalar</div>
+                                                    </button>
+                                                </li>
+                                                <li class="nav-item" role="presentation">
+                                                    <button type="button" class="nav-link" role="tab" data-bs-toggle="tab" data-bs-target="#getting-despatches-config" aria-controls="getting-despatches-config" aria-selected="false" tabindex="-1">
+                                                        <div class="avatar avatar-sm me-3">
+                                                            <span class="avatar-initial rounded bg-secondary">
+                                                                <i class="ti ti-file-invoice ti-sm rounded"></i>
+                                                            </span>
+                                                        </div>
+                                                        <div class="me-5">İrsaliyeler</div>
+                                                    </button>
+                                                </li>
+                                            </ul>
+                                            <div class="tab-content">
+                                                <div class="tab-pane fade show active" id="getting-general-config" role="tabpanel">
+                                                    <h5 class="mb-4">Veri Çekme Genel Ayarları</h5>
+                                                    <div class="mb-3">
+                                                        <label class="switch switch-square switch-lg switch-success">
+                                                            <input id="cron-checkbox" type="checkbox" class="switch-input" <% if(data.cron) { %> checked <% } %>>
+                                                            <span class="switch-toggle-slider">
+                                                                <span class="switch-on">
+                                                                    <i class="ti ti-check"></i>
+                                                                </span>
+                                                                <span class="switch-off">
+                                                                    <i class="ti ti-x"></i>
+                                                                </span>
+                                                            </span>
+                                                            <span class="switch-label">
+                                                                <span class="badge badge-center rounded-pill bg-label-dark ms-2 me-2" data-bs-toggle="tooltip" data-bs-placement="right" data-bs-custom-class="tooltip-label-dark" data-bs-original-title="Eğer seçenek aktifse, entegre uygulama düzenli olarak sorgulanır. Daha önce gönderilmemiş belge var ise otomatik gönderir.">
+                                                                    <i class="ti ti-question-mark"></i>
+                                                                </span>
+                                                                Düzenli veritabanı sorgusu
+                                                            </span>
+                                                        </label>
+                                                    </div>
+                                                    <div class="mb-3">
+                                                        <label class="switch switch-square switch-lg switch-success">
+                                                            <input id="numberBeforeSend-checkbox" type="checkbox" class="switch-input" <% if(data.numberBeforeSending) { %> checked <% } %>>
+                                                            <span class="switch-toggle-slider">
+                                                                <span class="switch-on">
+                                                                    <i class="ti ti-check"></i>
+                                                                </span>
+                                                                <span class="switch-off">
+                                                                    <i class="ti ti-x"></i>
+                                                                </span>
+                                                            </span>
+                                                            <span class="switch-label">
+                                                                <span class="badge badge-center rounded-pill bg-label-dark ms-2 me-2" data-bs-toggle="tooltip" data-bs-placement="right" data-bs-custom-class="tooltip-label-dark" data-bs-original-title="Eğer seçenek aktifse, uygulamaya belge bildirimi geldikten sonra ilgili belge önce numaralandırılırıp entegre uygulamada güncellenir, sonrasında sisteme gönderilir. (Her belge türü için özel ayarlama yapılmalıdır. 16 haneli olmayan numaralar için numaralama yapılır.)">
+                                                                    <i class="ti ti-question-mark"></i>
+                                                                </span>
+                                                                Gönderimden önce numaralama
+                                                            </span>
+                                                        </label>
                                                     </div>
                                                 </div>
-                                                <div class="row col-12">
-                                                    <div class="col-3">
-                                                        <div id="invoice-sqls-tree"></div>
-                                                    </div>
-                                                    <div class="col-9">
-                                                        <div id="invoice_sql_editor" style="height:500px;border: 1px;border-radius: 10%;"></div>
+                                                <div class="tab-pane fade" id="getting-invoices-config" role="tabpanel">
+                                                    <div class="card mb-4">
+                                                        <div class="card-body">
+                                                            <div class="card-title header-elements mb-4">
+                                                                <h5 class="m-0 me-2">Fatura Parametreleri</h5>
+                                                                <div class="card-title-elements ms-auto">
+                                                                    <button id="save-invoice-sqls" type="button" class="btn btn-sm btn-success waves-effect waves-light">Değişiklikleri Kaydet</button>
+                                                                </div>
+                                                            </div>
+                                                            <div class="row col-12">
+                                                                <div class="col-12">
+                                                                    <div id="nbs-invoices-settings" <% if(data.numberBeforeSending) { %> style="display: block;" <% } else { %> style="display: none;" <% } %>>
+                                                                        <div class="mb-3">
+                                                                            <label class="switch switch-square switch-lg switch-success">
+                                                                                <input id="nbs-einvoice-checkbox" type="checkbox" class="switch-input" <% if(data.nbs.einvoice) { %> checked <% } %>>
+                                                                                <span class="switch-toggle-slider">
+                                                                                    <span class="switch-on">
+                                                                                        <i class="ti ti-check"></i>
+                                                                                    </span>
+                                                                                    <span class="switch-off">
+                                                                                        <i class="ti ti-x"></i>
+                                                                                    </span>
+                                                                                </span>
+                                                                                <span class="switch-label">
+                                                                                    <span class="badge badge-center rounded-pill bg-label-dark ms-2 me-2" data-bs-toggle="tooltip" data-bs-placement="right" data-bs-custom-class="tooltip-label-dark" data-bs-original-title="Eğer seçenek aktifse, uygulamaya e-Fatura bildirimi geldikten sonra ilgili e-Fatura önce numaralandırılırıp entegre uygulamada güncellenir, sonrasında sisteme gönderilir. (16 haneli olmayan numaralar için numaralama yapılır.)">
+                                                                                        <i class="ti ti-question-mark"></i>
+                                                                                    </span>
+                                                                                    e-Faturaları gönderimden önce numarala
+                                                                                </span>
+                                                                            </label>
+                                                                        </div>
+                                                                        <div id="nbs-einvoice-serie-div" class="mb-3" <% if(data.nbs.einvoice) { %> style="display: block;" <% } else { %> style="display: none;" <% } %>>
+                                                                            <label for="nbs-einvoice-serie" class="form-label">Takip edilecek e-Fatura Serisi</label>
+                                                                            <input type="text" class="form-control" id="nbs-einvoice-serie" value="<%= data.nbs.series.einvoice %>">
+                                                                        </div>
+                                                                        <div class="mb-3">
+                                                                            <label class="switch switch-square switch-lg switch-success">
+                                                                                <input id="nbs-earchive-checkbox" type="checkbox" class="switch-input" <% if(data.nbs.earchive) { %> checked <% } %>>
+                                                                                <span class="switch-toggle-slider">
+                                                                                    <span class="switch-on">
+                                                                                        <i class="ti ti-check"></i>
+                                                                                    </span>
+                                                                                    <span class="switch-off">
+                                                                                        <i class="ti ti-x"></i>
+                                                                                    </span>
+                                                                                </span>
+                                                                                <span class="switch-label">
+                                                                                    <span class="badge badge-center rounded-pill bg-label-dark ms-2 me-2" data-bs-toggle="tooltip" data-bs-placement="right" data-bs-custom-class="tooltip-label-dark" data-bs-original-title="Eğer seçenek aktifse, uygulamaya e-Arşiv Fatura bildirimi geldikten sonra ilgili e-Arşiv Fatura önce numaralandırılırıp entegre uygulamada güncellenir, sonrasında sisteme gönderilir. (16 haneli olmayan numaralar için numaralama yapılır.)">
+                                                                                        <i class="ti ti-question-mark"></i>
+                                                                                    </span>
+                                                                                    e-Arşiv Faturaları gönderimden önce numarala
+                                                                                </span>
+                                                                            </label>
+                                                                        </div>
+                                                                        <div id="nbs-earchive-serie-div" class="mb-1" <% if(data.nbs.earchive) { %> style="display: block;" <% } else { %> style="display: none;" <% } %>>
+                                                                            <label for="nbs-earchive-serie" class="form-label">Takip edilecek e-Fatura Serisi</label>
+                                                                            <input type="text" class="form-control" id="nbs-earchive-serie" value="<%= data.nbs.series.earchive %>">
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                                <div class="divider">
+                                                                    <div class="divider-text">Sorgular</div>
+                                                                </div>
+                                                                <div class="col-12 col-xl-4 mt-1">
+                                                                    <div id="invoice-sqls-tree"></div>
+                                                                </div>
+                                                                <div class="col-12 col-xl-8">
+                                                                    <div id="invoice_sql_editor" style="height:500px;border: 1px;border-radius: 10%;"></div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
                                                     </div>
                                                 </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="tab-pane fade" id="despatches-config" role="tabpanel">
-                                        <div class="card mb-4">
-                                            <div class="card-body">
-                                                <div class="card-title header-elements mb-4">
-                                                    <h5 class="m-0 me-2">İrsaliye Parametreleri</h5>
-                                                    <div class="card-title-elements ms-auto">
-                                                        <button id="save-despatch-sqls" type="button" class="btn btn-sm btn-success waves-effect waves-light">Değişiklikleri Kaydet</button>
-                                                    </div>
-                                                </div>
-                                                <div class="row col-12">
-                                                    <div class="col-3">
-                                                        <div id="despatch-sqls-tree"></div>
-                                                    </div>
-                                                    <div class="col-9">
-                                                        <div id="despatch_sql_editor" style="height:500px;border: 1px;border-radius: 10%;"></div>
+                                                <div class="tab-pane fade" id="getting-despatches-config" role="tabpanel">
+                                                    <div class="card mb-4">
+                                                        <div class="card-body">
+                                                            <div class="card-title header-elements mb-4">
+                                                                <h5 class="m-0 me-2">İrsaliye Parametreleri</h5>
+                                                                <div class="card-title-elements ms-auto">
+                                                                    <button id="save-despatch-sqls" type="button" class="btn btn-sm btn-success waves-effect waves-light">Değişiklikleri Kaydet</button>
+                                                                </div>
+                                                            </div>
+                                                            <div class="row col-12">
+                                                                <div class="col-12 col-xl-4">
+                                                                    <div id="despatch-sqls-tree"></div>
+                                                                </div>
+                                                                <div class="col-12 col-xl-8">
+                                                                    <div id="despatch_sql_editor" style="height:500px;border: 1px;border-radius: 10%;"></div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
                                                     </div>
                                                 </div>
                                             </div>

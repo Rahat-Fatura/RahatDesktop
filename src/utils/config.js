@@ -70,7 +70,7 @@ class Config {
     const keys = key.split('.');
     let current = obj;
     keys.forEach((fkey) => {
-      if (Object.prototype.hasOwnProperty.call(current, fkey)) {
+      if (current !== undefined && Object.prototype.hasOwnProperty.call(current, fkey)) {
         current = current[fkey];
       } else {
         current = undefined;
