@@ -297,7 +297,7 @@ $(document).ready(function () {
     ipc.send('check-for-updates');
   });
   ipc.on('updater-message', (event, text) => {
-    console.log(text);
+    console.log(`logs: ${text}`);
     $('#updater-logs').append(`<li class="list-group-item list-group-timeline-primary">${text}</li>`);
   });
 });
