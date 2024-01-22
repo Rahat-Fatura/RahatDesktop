@@ -3,7 +3,6 @@
   "version": "0.4.0",
   "description": "An app for rahatsistem.com.tr",
   "main": "src/index.js",
-  "productName": "Rahat Desktop",
   "scripts": {
     "start": "pm2 start ecosystem.config.json --no-daemon",
     "dev": "nodemon --watch . --exec electron .",
@@ -11,7 +10,8 @@
     "lint:fix": "eslint . --fix",
     "prettier": "prettier --check **/*.js",
     "prettier:fix": "prettier --write **/*.js",
-    "build": "electron-builder --win --ia32 --x64"
+    "build": "electron-builder --win --ia32 --x64",
+    "release": "electron-builder --win -p always"
   },
   "dependencies": {
     "add-zero": "^1.0.0",
@@ -23,6 +23,7 @@
     "debug": "~2.6.9",
     "dotenv": "^16.3.1",
     "ejs": "~2.6.1",
+    "electron-updater": "^6.1.7",
     "express": "~4.16.1",
     "graphql": "^16.8.1",
     "graphql-request": "^6.1.0",
@@ -55,5 +56,28 @@
     "prettier": "^3.1.0"
   },
   "author": "Berkay Gökçe",
-  "license": "ISC"
+  "license": "ISC",
+  "build": {
+    "appId": "com.rahatsistem.rahat-desktop",
+    "productName": "RahatDesktop",
+    "publish": [
+      {
+        "provider": "github"
+      }
+    ],
+    "win": {
+      "publish": [
+        "github"
+      ],
+      "target": [
+        {
+          "target": "nsis",
+          "arch": [
+            "x64",
+            "ia32"
+          ]
+        }
+      ]
+    }
+  }
 }

@@ -1,9 +1,12 @@
 const fs = require('fs');
 const path = require('path');
 const { app, BrowserWindow, nativeImage, Tray, Menu, shell, ipcMain } = require('electron');
+const { autoUpdater } = require('electron-updater');
+const logger = require('../config/logger');
 const config = require('../config/config');
 
 const isMac = process.platform === 'darwin';
+autoUpdater.logger = logger;
 
 const createWindow = () => {
   const mainWindow = new BrowserWindow({
@@ -218,6 +221,13 @@ const ipcListeners = (mainWindow) => {
 
   ipcMain.on('open-logfile', () => {
     shell.openPath(path.join(app.getPath('userData'), '/logs'));
+  });
+  ipcMain.on('get-version', (event) => {
+    // eslint-disable-next-line no-param-reassign
+    event.returnValue = app.getVersion();
+  });
+  ipcMain.on('check-for-updates', () => {
+    autoUpdater.checkForUpdatesAndNotify();
   });
 };
 

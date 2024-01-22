@@ -291,4 +291,8 @@ $(document).ready(function () {
   $('#open-log-folder').click(function () {
     ipc.send('open-logfile');
   });
+  $('#version').text('v' + ipc.sendSync('get-version'));
+  $('#check-for-updates').click(function () {
+    ipc.send('check-for-updates');
+  });
 });

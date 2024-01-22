@@ -55,51 +55,85 @@
                                 <div class="tab-content p-0">
                                     <div class="tab-pane fade p-4 show active" id="app-config" role="tabpanel">
                                         <h5 class="mb-4">Genel Ayarlar</h5>
-                                        <div class="mb-3">
-                                            <label class="switch switch-square switch-lg switch-success">
-                                                <input id="autolaunch-checkbox" type="checkbox" class="switch-input" <% if(data.autoLaunch) { %> checked <% } %>>
-                                                <span class="switch-toggle-slider">
-                                                    <span class="switch-on">
-                                                        <i class="ti ti-check"></i>
-                                                    </span>
-                                                    <span class="switch-off">
-                                                        <i class="ti ti-x"></i>
-                                                    </span>
-                                                </span>
-                                                <span class="switch-label">
-                                                    <span class="badge badge-center rounded-pill bg-label-dark ms-2 me-2" data-bs-toggle="tooltip" data-bs-placement="right" data-bs-custom-class="tooltip-label-dark" data-bs-original-title="Eğer seçenek aktifse, bilgisayar açıldığında uygulama otomatik olarak açılır.">
-                                                        <i class="ti ti-question-mark"></i>
-                                                    </span>
-                                                    Açılışta otomatik açılsın (Önerilir)
-                                                </span>
-                                            </label>
-                                        </div>
-                                        <div class="mb-3">
-                                            <label class="switch switch-square switch-lg switch-success">
-                                                <input id="rmq-checkbox" type="checkbox" class="switch-input" <% if(data.rmq) { %> checked <% } %>>
-                                                <span class="switch-toggle-slider">
-                                                    <span class="switch-on">
-                                                        <i class="ti ti-check"></i>
-                                                    </span>
-                                                    <span class="switch-off">
-                                                        <i class="ti ti-x"></i>
-                                                    </span>
-                                                </span>
-                                                <span class="switch-label">
-                                                    <span class="badge badge-center rounded-pill bg-label-dark ms-2 me-2" data-bs-toggle="tooltip" data-bs-placement="right" data-bs-custom-class="tooltip-label-dark" data-bs-original-title="Eğer seçenek aktifse, uzak sistem dinlemeye başlanır. Sistem üzerinden fatura yenileme, fatura numarası güncelleme bildirimleri vs. gelirse ilgili işlemi gerçekleştirir.">
-                                                        <i class="ti ti-question-mark"></i>
-                                                    </span>
-                                                    Uzak sistem dinleme
-                                                </span>
-                                            </label>
+                                        <div class="list-group">
+                                            <div class="list-group-item d-flex align-items-center">
+                                                <div class="w-100">
+                                                    <div class="d-flex justify-content-between">
+                                                        <div class="user-info">
+                                                            <label class="switch switch-square switch-lg switch-success">
+                                                                <input id="autolaunch-checkbox" type="checkbox" class="switch-input" <% if(data.autoLaunch) { %> checked <% } %>>
+                                                                <span class="switch-toggle-slider">
+                                                                    <span class="switch-on">
+                                                                        <i class="ti ti-check"></i>
+                                                                    </span>
+                                                                    <span class="switch-off">
+                                                                        <i class="ti ti-x"></i>
+                                                                    </span>
+                                                                </span>
+                                                                <span class="switch-label">
+                                                                    <span class="badge badge-center rounded-pill bg-label-dark ms-2 me-2" data-bs-toggle="tooltip" data-bs-placement="right" data-bs-custom-class="tooltip-label-dark" data-bs-original-title="Eğer seçenek aktifse, bilgisayar açıldığında uygulama otomatik olarak açılır.">
+                                                                        <i class="ti ti-question-mark"></i>
+                                                                    </span>
+                                                                    Açılışta otomatik açılsın (Önerilir)
+                                                                </span>
+                                                            </label>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="list-group-item d-flex align-items-center">
+                                                <div class="w-100">
+                                                    <div class="d-flex justify-content-between">
+                                                        <div class="user-info">
+                                                            <label class="switch switch-square switch-lg switch-success">
+                                                                <input id="rmq-checkbox" type="checkbox" class="switch-input" <% if(data.rmq) { %> checked <% } %>>
+                                                                <span class="switch-toggle-slider">
+                                                                    <span class="switch-on">
+                                                                        <i class="ti ti-check"></i>
+                                                                    </span>
+                                                                    <span class="switch-off">
+                                                                        <i class="ti ti-x"></i>
+                                                                    </span>
+                                                                </span>
+                                                                <span class="switch-label">
+                                                                    <span class="badge badge-center rounded-pill bg-label-dark ms-2 me-2" data-bs-toggle="tooltip" data-bs-placement="right" data-bs-custom-class="tooltip-label-dark" data-bs-original-title="Eğer seçenek aktifse, uzak sistem dinlemeye başlanır. Sistem üzerinden fatura yenileme, fatura numarası güncelleme bildirimleri vs. gelirse ilgili işlemi gerçekleştirir.">
+                                                                        <i class="ti ti-question-mark"></i>
+                                                                    </span>
+                                                                    Uzak sistem dinleme
+                                                                </span>
+                                                            </label>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
                                         </div>
                                         <hr>
-                                        <div class="col-12 row">
-                                            <div class="col-10">
-                                                <p class="mt-2">Log dosyası konumu : <%= data.logsPath %> </p>
+                                        <div class="list-group">
+                                            <div class="list-group-item d-flex align-items-center">
+                                                <div class="w-100">
+                                                    <div class="d-flex justify-content-between">
+                                                        <div class="user-info">
+                                                            <small class="mb-1">Log Dosyası Konumu</small>
+                                                            <h6 class="mb-1"><%= data.logsPath %></small>
+                                                        </div>
+                                                        <div class="mt-1">
+                                                            <button id="open-log-folder" class="btn btn-primary  waves-effect waves-light">Klasörde Göster</button>
+                                                        </div>
+                                                    </div>
+                                                </div>
                                             </div>
-                                            <div class="col-2">
-                                                <button id="open-log-folder" type="button" class="btn btn-label-success waves-effect">Klasörde Göster</button>
+                                            <div class="list-group-item d-flex align-items-center">
+                                                <div class="w-100">
+                                                    <div class="d-flex justify-content-between">
+                                                        <div class="user-info">
+                                                            <small class="mb-1">Uygulama sürümü</small>
+                                                            <h6 id="version" class="mb-1"></small>
+                                                        </div>
+                                                        <div class="mt-1">
+                                                            <button id="check-for-updates" class="btn btn-primary  waves-effect waves-light">Güncelleştirmeleri Denetle</button>
+                                                        </div>
+                                                    </div>
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
