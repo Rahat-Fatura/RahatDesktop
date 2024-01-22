@@ -293,6 +293,11 @@ $(document).ready(function () {
   });
   $('#version').text('v' + ipc.sendSync('get-version'));
   $('#check-for-updates').click(function () {
+    $('#updater-logs-div').slideDown(250);
     ipc.send('check-for-updates');
+  });
+  ipc.on('updater-message', (event, text) => {
+    console.log(text);
+    $('#updater-logs').append(`<li class="list-group-item list-group-timeline-primary">${text}</li>`);
   });
 });

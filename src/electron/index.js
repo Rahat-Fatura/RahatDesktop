@@ -227,7 +227,34 @@ const ipcListeners = (mainWindow) => {
     event.returnValue = app.getVersion();
   });
   ipcMain.on('check-for-updates', () => {
+    mainWindow.webContents.send('updater-message', 'Hareket başladı...');
     autoUpdater.checkForUpdatesAndNotify();
+  });
+
+  const sendStatusToWindow = (text) => {
+    mainWindow.webContents.send('updater-message', text);
+  };
+
+  autoUpdater.on('checking-for-update', () => {
+    sendStatusToWindow('Güncellemeler kontrol ediliyor...');
+  });
+  autoUpdater.on('update-available', (info) => {
+    sendStatusToWindow(`Güncelleme bulundu. ${JSON.stringify(info)}`);
+  });
+  autoUpdater.on('update-not-available', (info) => {
+    sendStatusToWindow(`Güncelleme bulunamadı. ${JSON.stringify(info)}`);
+  });
+  autoUpdater.on('error', (err) => {
+    sendStatusToWindow(`Güncelleme kontrol edilirken bir hata ile karşılaşıldı. ${err}`);
+  });
+  autoUpdater.on('download-progress', (progressObj) => {
+    let message = `İndirme Hızı: ${progressObj.bytesPerSecond}`;
+    message = `${message} - İndirilen ${progressObj.percent}%`;
+    message = `${message} (${progressObj.transferred}/${progressObj.total})`;
+    sendStatusToWindow(message);
+  });
+  autoUpdater.on('update-downloaded', (info) => {
+    sendStatusToWindow(`Güncelleme indirildi. ${JSON.stringify(info)}`);
   });
 };
 
