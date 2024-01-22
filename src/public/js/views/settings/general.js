@@ -328,7 +328,7 @@ $(document).ready(function () {
               </li>`,
           );
         }
-        $('#download-progress-bar').css('width', `${data.data.percent}%`);
+        $('#download-progress-bar').css('width', data.data.percent);
         $('#download-progress-bar').attr('aria-valuenow', data.data.percent);
         $('#download-progress-percent').text(data.data.percent);
         $('#download-progress-speed').text(data.data.bytesPerSecond);
