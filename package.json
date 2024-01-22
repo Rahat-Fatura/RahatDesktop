@@ -1,6 +1,6 @@
 {
   "name": "rahatdesktop",
-  "version": "0.5.8",
+  "version": "0.5.9",
   "description": "An app for rahatsistem.com.tr",
   "main": "src/index.js",
   "scripts": {
