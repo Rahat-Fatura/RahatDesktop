@@ -174,43 +174,57 @@
                                             <div class="tab-content">
                                                 <div class="tab-pane fade show active" id="getting-general-config" role="tabpanel">
                                                     <h5 class="mb-4">Veri Çekme Genel Ayarları</h5>
-                                                    <div class="mb-3">
-                                                        <label class="switch switch-square switch-lg switch-success">
-                                                            <input id="cron-checkbox" type="checkbox" class="switch-input" <% if(data.cron) { %> checked <% } %>>
-                                                            <span class="switch-toggle-slider">
-                                                                <span class="switch-on">
-                                                                    <i class="ti ti-check"></i>
-                                                                </span>
-                                                                <span class="switch-off">
-                                                                    <i class="ti ti-x"></i>
-                                                                </span>
-                                                            </span>
-                                                            <span class="switch-label">
-                                                                <span class="badge badge-center rounded-pill bg-label-dark ms-2 me-2" data-bs-toggle="tooltip" data-bs-placement="right" data-bs-custom-class="tooltip-label-dark" data-bs-original-title="Eğer seçenek aktifse, entegre uygulama düzenli olarak sorgulanır. Daha önce gönderilmemiş belge var ise otomatik gönderir.">
-                                                                    <i class="ti ti-question-mark"></i>
-                                                                </span>
-                                                                Düzenli veritabanı sorgusu
-                                                            </span>
-                                                        </label>
-                                                    </div>
-                                                    <div class="mb-3">
-                                                        <label class="switch switch-square switch-lg switch-success">
-                                                            <input id="numberBeforeSend-checkbox" type="checkbox" class="switch-input" <% if(data.numberBeforeSending) { %> checked <% } %>>
-                                                            <span class="switch-toggle-slider">
-                                                                <span class="switch-on">
-                                                                    <i class="ti ti-check"></i>
-                                                                </span>
-                                                                <span class="switch-off">
-                                                                    <i class="ti ti-x"></i>
-                                                                </span>
-                                                            </span>
-                                                            <span class="switch-label">
-                                                                <span class="badge badge-center rounded-pill bg-label-dark ms-2 me-2" data-bs-toggle="tooltip" data-bs-placement="right" data-bs-custom-class="tooltip-label-dark" data-bs-original-title="Eğer seçenek aktifse, uygulamaya belge bildirimi geldikten sonra ilgili belge önce numaralandırılırıp entegre uygulamada güncellenir, sonrasında sisteme gönderilir. (Her belge türü için özel ayarlama yapılmalıdır. 16 haneli olmayan numaralar için numaralama yapılır.)">
-                                                                    <i class="ti ti-question-mark"></i>
-                                                                </span>
-                                                                Gönderimden önce numaralama
-                                                            </span>
-                                                        </label>
+                                                    <div class="list-group">
+                                                        <div class="list-group-item d-flex align-items-center">
+                                                            <div class="w-100">
+                                                                <div class="d-flex justify-content-between">
+                                                                    <div class="user-info">
+                                                                        <label class="switch switch-square switch-lg switch-success">
+                                                                            <input id="cron-checkbox" type="checkbox" class="switch-input" <% if(data.cron) { %> checked <% } %>>
+                                                                            <span class="switch-toggle-slider">
+                                                                                <span class="switch-on">
+                                                                                    <i class="ti ti-check"></i>
+                                                                                </span>
+                                                                                <span class="switch-off">
+                                                                                    <i class="ti ti-x"></i>
+                                                                                </span>
+                                                                            </span>
+                                                                            <span class="switch-label">
+                                                                                <span class="badge badge-center rounded-pill bg-label-dark ms-2 me-2" data-bs-toggle="tooltip" data-bs-placement="right" data-bs-custom-class="tooltip-label-dark" data-bs-original-title="Eğer seçenek aktifse, entegre uygulama düzenli olarak sorgulanır. Daha önce gönderilmemiş belge var ise otomatik gönderir.">
+                                                                                    <i class="ti ti-question-mark"></i>
+                                                                                </span>
+                                                                                Düzenli veritabanı sorgusu
+                                                                            </span>
+                                                                        </label>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="list-group-item d-flex align-items-center">
+                                                            <div class="w-100">
+                                                                <div class="d-flex justify-content-between">
+                                                                    <div class="user-info">
+                                                                        <label class="switch switch-square switch-lg switch-success">
+                                                                            <input id="numberBeforeSend-checkbox" type="checkbox" class="switch-input" <% if(data.numberBeforeSending) { %> checked <% } %>>
+                                                                            <span class="switch-toggle-slider">
+                                                                                <span class="switch-on">
+                                                                                    <i class="ti ti-check"></i>
+                                                                                </span>
+                                                                                <span class="switch-off">
+                                                                                    <i class="ti ti-x"></i>
+                                                                                </span>
+                                                                            </span>
+                                                                            <span class="switch-label">
+                                                                                <span class="badge badge-center rounded-pill bg-label-dark ms-2 me-2" data-bs-toggle="tooltip" data-bs-placement="right" data-bs-custom-class="tooltip-label-dark" data-bs-original-title="Eğer seçenek aktifse, uygulamaya belge bildirimi geldikten sonra ilgili belge önce numaralandırılırıp entegre uygulamada güncellenir, sonrasında sisteme gönderilir. (Her belge türü için özel ayarlama yapılmalıdır. 16 haneli olmayan numaralar için numaralama yapılır.)">
+                                                                                    <i class="ti ti-question-mark"></i>
+                                                                                </span>
+                                                                                Gönderimden önce numaralama
+                                                                            </span>
+                                                                        </label>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
                                                     </div>
                                                 </div>
                                                 <div class="tab-pane fade" id="getting-invoices-config" role="tabpanel">
