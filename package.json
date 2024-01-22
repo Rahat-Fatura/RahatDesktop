@@ -19,6 +19,7 @@
     "amqplib": "^0.10.3",
     "auto-launch": "^5.0.6",
     "axios": "^1.6.2",
+    "bytes": "^3.1.2",
     "cookie-parser": "~1.4.4",
     "date-and-time": "^3.1.0",
     "debug": "~2.6.9",

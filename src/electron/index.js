@@ -2,6 +2,7 @@ const fs = require('fs');
 const path = require('path');
 const { app, BrowserWindow, nativeImage, Tray, Menu, shell, ipcMain } = require('electron');
 const { autoUpdater } = require('electron-updater');
+const bytes = require('bytes');
 const logger = require('../config/logger');
 const config = require('../config/config');
 
@@ -226,35 +227,37 @@ const ipcListeners = (mainWindow) => {
     // eslint-disable-next-line no-param-reassign
     event.returnValue = app.getVersion();
   });
-  ipcMain.on('check-for-updates', () => {
-    mainWindow.webContents.send('updater-message', 'Hareket başladı...');
-    autoUpdater.checkForUpdatesAndNotify();
-  });
-
   const sendStatusToWindow = (text) => {
     mainWindow.webContents.send('updater-message', text);
   };
 
+  ipcMain.on('check-for-updates', () => {
+    sendStatusToWindow(JSON.stringify({ status: 'checking-for-update', message: 'Kontroller başladı...' }));
+    autoUpdater.checkForUpdatesAndNotify();
+  });
   autoUpdater.on('checking-for-update', () => {
-    sendStatusToWindow('Güncellemeler kontrol ediliyor...');
+    sendStatusToWindow(JSON.stringify({ status: 'checking-for-update', message: 'Güncellemeler kontrol ediliyor...' }));
   });
   autoUpdater.on('update-available', (info) => {
-    sendStatusToWindow(`Güncelleme bulundu. ${JSON.stringify(info)}`);
+    sendStatusToWindow(JSON.stringify({ status: 'update-available', message: 'Güncelleme bulundu.', info }));
   });
   autoUpdater.on('update-not-available', (info) => {
-    sendStatusToWindow(`Güncelleme bulunamadı. ${JSON.stringify(info)}`);
+    sendStatusToWindow(JSON.stringify({ status: 'update-not-available', message: 'Güncelleme bulunamadı.', info }));
   });
   autoUpdater.on('error', (err) => {
-    sendStatusToWindow(`Güncelleme kontrol edilirken bir hata ile karşılaşıldı. ${err}`);
+    sendStatusToWindow(JSON.stringify({ status: 'error', message: 'Güncelleme hatası.', err }));
   });
   autoUpdater.on('download-progress', (progressObj) => {
-    let message = `İndirme Hızı: ${progressObj.bytesPerSecond}`;
-    message = `${message} - İndirilen ${progressObj.percent}%`;
-    message = `${message} (${progressObj.transferred}/${progressObj.total})`;
-    sendStatusToWindow(message);
+    const data = {
+      bytesPerSecond: bytes(progressObj.bytesPerSecond),
+      percent: `${progressObj.percent.toFixed(2)}%`,
+      total: bytes(progressObj.total),
+      transferred: bytes(progressObj.transferred),
+    };
+    sendStatusToWindow(JSON.stringify({ status: 'download-progress', data }));
   });
   autoUpdater.on('update-downloaded', (info) => {
-    sendStatusToWindow(`Güncelleme indirildi. ${JSON.stringify(info)}`);
+    sendStatusToWindow(JSON.stringify({ status: 'update-downloaded', message: 'Güncelleme indirildi.', info }));
   });
 };
 

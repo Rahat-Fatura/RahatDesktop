@@ -297,7 +297,49 @@ $(document).ready(function () {
     ipc.send('check-for-updates');
   });
   ipc.on('updater-message', (event, text) => {
-    console.log(`logs: ${text}`);
-    $('#updater-logs').append(`<li class="list-group-item list-group-timeline-primary">${text}</li>`);
+    const data = JSON.parse(text);
+    switch (data.status) {
+      case 'checking-for-update':
+        $('#updater-logs').append(`<li class="list-group-item list-group-timeline-primary">${data.message}</li>`);
+        break;
+      case 'update-available':
+        $('#updater-logs').append(
+          `<li class="list-group-item list-group-timeline-success">${data.message} - Bulunan versiyon: <b>${data.info.version}</b></li>`,
+        );
+        break;
+      case 'update-not-available':
+        $('#updater-logs').append(`<li class="list-group-item list-group-timeline-danger">${data.message}</li>`);
+        break;
+      case 'error':
+        $('#updater-logs').append(
+          `<li class="list-group-item list-group-timeline-danger">${data.message} - Hata: <b>${data.err}</b></li>`,
+        );
+        break;
+      case 'download-progress':
+        if ($('#download-progress-bar').length === 0) {
+          $('#updater-logs').append(
+            ` <li class="list-group-item list-group-timeline-success demo-vertical-spacing demo-only-element">
+                  <div class="progress">
+                      <div id="download-progress-bar" class="progress-bar progress-bar-striped progress-bar-animated bg-success" role="progressbar" style="width: 0%" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100"></div>
+                  </div>
+                  <p>İndirme: <span id="download-progress-percent">0</span> || Hız: <span id="download-progress-speed">0</span> || Durum: <span id="download-progress-transferred">0</span> / <span id="download-progress-total">0</span> </p>
+              </li>`,
+                );
+        }
+        $('#download-progress-bar').css('width', `${data.data.percent}%`);
+        $('#download-progress-bar').attr('aria-valuenow', data.data.percent);
+        $('#download-progress-percent').text(data.data.percent);
+        $('#download-progress-speed').text(data.data.bytesPerSecond);
+        $('#download-progress-transferred').text(data.data.transferred);
+        $('#download-progress-total').text(data.data.total);
+        break;
+      case 'update-downloaded':
+        Swal.fire({
+          icon: 'success',
+          title: 'Başarılı',
+          text: 'Güncelleme indirildi. Uygulamayı yeniden başlatınız.',
+        });
+        break;
+    }
   });
 });
