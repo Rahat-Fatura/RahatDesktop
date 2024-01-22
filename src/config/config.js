@@ -5,8 +5,6 @@ const Config = require('../utils/config');
 const configPath = path.join(app.getPath('userData'), 'rahat_desktop.json');
 const config = new Config(configPath);
 
-// config.clear();
-
 if (!config.has('url')) {
   config.set('url', 'https://localservice.rahatsistem.com.tr/v1');
 }
