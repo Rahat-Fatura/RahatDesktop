@@ -297,7 +297,9 @@ $(document).ready(function () {
     ipc.send('check-for-updates');
   });
   ipc.on('updater-message', (event, text) => {
+    console.log(text);
     const data = JSON.parse(text);
+    console.log(data);
     switch (data.status) {
       case 'checking-for-update':
         $('#updater-logs').append(`<li class="list-group-item list-group-timeline-primary">${data.message}</li>`);
@@ -324,7 +326,7 @@ $(document).ready(function () {
                   </div>
                   <p>İndirme: <span id="download-progress-percent">0</span> || Hız: <span id="download-progress-speed">0</span> || Durum: <span id="download-progress-transferred">0</span> / <span id="download-progress-total">0</span> </p>
               </li>`,
-                );
+          );
         }
         $('#download-progress-bar').css('width', `${data.data.percent}%`);
         $('#download-progress-bar').attr('aria-valuenow', data.data.percent);
